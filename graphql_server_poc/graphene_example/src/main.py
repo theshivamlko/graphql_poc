@@ -2,11 +2,29 @@ from graphene import Schema, ObjectType, String, Int
 import random
 
 
-class Query(ObjectType):
-    hello=String(name=String(default_value="world"))
+class User(ObjectType):
+    name=String(name=String(default_value="John"))
     gender=String(name=String(default_value=""))
     id= Int()
     age= Int()
+
+    def resolve_name(self,info,name):
+        return  f'{name} '
+
+    def resolve_gender(self,info,name):
+        return  f'h{name} '
+
+    def resolve_id(self,info):
+        return random.randint(100, 999)
+
+    def resolve_age(self,info):
+        return random.randint(20, 50)
+
+
+class Query(ObjectType):
+    pass
+
+
 
 
     def resolve_hello(self,info,name):
@@ -18,15 +36,20 @@ class Query(ObjectType):
     def resolve_id(self,info):
         return random.randint(100, 999)
 
+    def resolve_age(self,info):
+        return random.randint(20, 50)
 
 
-schema=Schema(query=Query)
+
+
+schema=Schema(query=User)
 
 gql=''' 
 {
     id
-    hello
+    name
     gender
+    age
 }
 '''
 
